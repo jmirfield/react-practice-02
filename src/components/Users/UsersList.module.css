@@ -1,0 +1,20 @@
+.list ul {
+    list-style: none;
+    padding: 1rem;
+}
+
+.list li {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    border: solid 1px black;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 1rem;
+}
+
+.list h3 {
+    font-size: 1rem;
+
+}
+
