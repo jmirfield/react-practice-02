@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import NewUserForm from './components/Users/NewUserForm'
 import UsersList from './components/Users/UsersList'
 
@@ -26,10 +25,10 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <NewUserForm onSave={addUserHandler} />
       <UsersList users={users} />
-    </div>
+    </>
   );
 }
 

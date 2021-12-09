@@ -1,60 +1,61 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import Card from '../UI/Card';
 import styles from './NewUserForm.module.css'
 import Button from '../UI/Button'
+import ErrorModal from '../UI/ErrorModal';
+import NewUserWrapper from '../Helpers/Wrapper'
 
 const NewUserForm = (props) => {
 
-    const [userInput, setUserInput] = useState({
-        enteredUsername: '',
-        enteredAge: ''
-    })
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+
+    const [isError, setError] = useState(false)
 
     const formHandler = (e) => {
         e.preventDefault()
-        if (userInput.enteredUsername.trim().length && +userInput.enteredAge > 0) {
+        const enteredName = nameInputRef.current.value;
+        const enteredAge = ageInputRef.current.value;
+        if (enteredName.trim().length && +enteredAge > 0) {
             props.onSave({
-                name: userInput.enteredUsername,
-                age: +userInput.enteredAge,
+                name: enteredName,
+                age: +enteredAge,
                 id: Math.random().toString()
             })
-            setUserInput({
-                enteredUsername: '',
-                enteredAge: ''
-            })
+            nameInputRef.current.value = ''
+            ageInputRef.current.value = ''
+        } else {
+            setError(true)
         }
 
     }
 
-    const usernameHandler = (e) => {
-        setUserInput(prev => {
-            return {
-                ...prev,
-                enteredUsername: e.target.value
-            }
-        })
-    }
-
-    const ageHandler = (e) => {
-        setUserInput((prev) => {
-            return {
-                ...prev,
-                enteredAge: e.target.value
-            }
-        })
+    const errorHandler = () => {
+        setError(false)
     }
 
     return (
-        <Card className={styles.input}>
-            <form onSubmit={formHandler} autoComplete="off">
-                <label htmlFor='username'>Username</label>
-                <input id='username' value={userInput.enteredUsername} onChange={usernameHandler} type='text' />
-                <label htmlFor='age'>Age</label>
-                <input id='age' value={userInput.enteredAge} onChange={ageHandler} type='number' />
-                <Button type="submit">Add User</Button>
-            </form>
-        </Card>
+        <NewUserWrapper>
+            {isError && <ErrorModal title='An error has occured!' message='Something went wrong!' onButton={errorHandler} />}
+            <Card className={styles.input}>
+                <form onSubmit={formHandler} autoComplete="off">
+                    <label htmlFor='username'>Username</label>
+                    <input
+                        id='username'
+                        type='text'
+                        ref={nameInputRef}
+                    />
+                    <label htmlFor='age'>Age</label>
+                    <input
+                        id='age'
+                        type='number'
+                        ref={ageInputRef}
+                    />
+                    <Button type="submit">Add User</Button>
+                </form>
+            </Card>
+        </NewUserWrapper>
     )
 }
 
