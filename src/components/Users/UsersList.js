@@ -1,9 +1,12 @@
+import React, { useMemo } from 'react'
+
 import User from './User'
 import Card from '../UI/Card'
 import styles from './UsersList.module.css'
 
 const UsersList = (props) => {
-    const Users = props.users.map(user => {
+    console.log('Rendering List')
+    const Users = useMemo(() => props.users, [props.users]).map(user => {
         return <User
             user={user}
             key={user.id}
@@ -18,4 +21,4 @@ const UsersList = (props) => {
     )
 }
 
-export default UsersList;
+export default React.memo(UsersList);

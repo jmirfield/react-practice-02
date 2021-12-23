@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom'
+import React from 'react'
 
 import Card from './Card'
 import Button from './Button'
@@ -45,4 +46,4 @@ const ErrorModal = (props) => {
     )
 }
 
-export default ErrorModal;
+export default React.memo(ErrorModal);

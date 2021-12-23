@@ -1,17 +1,16 @@
-import { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import Card from '../UI/Card';
 import styles from './NewUserForm.module.css'
 import Button from '../UI/Button'
-import ErrorModal from '../UI/ErrorModal';
 import NewUserWrapper from '../Helpers/Wrapper'
 
 const NewUserForm = (props) => {
 
+    console.log('Rendering form')
     const nameInputRef = useRef();
     const ageInputRef = useRef();
 
-    const [isError, setError] = useState(false)
 
     const formHandler = (e) => {
         e.preventDefault()
@@ -26,19 +25,17 @@ const NewUserForm = (props) => {
             nameInputRef.current.value = ''
             ageInputRef.current.value = ''
         } else {
-            setError(true)
+            props.onError(true)
         }
 
     }
 
-    const errorHandler = () => {
-        setError(false)
-    }
+    
 
     return (
         <NewUserWrapper>
-            {isError && <ErrorModal title='An error has occured!' message='Something went wrong!' onButton={errorHandler} />}
             <Card className={styles.input}>
+                <Button onClick={props.onToggle}>Hide Users</Button>
                 <form onSubmit={formHandler} autoComplete="off">
                     <label htmlFor='username'>Username</label>
                     <input
@@ -59,4 +56,4 @@ const NewUserForm = (props) => {
     )
 }
 
-export default NewUserForm;
+export default React.memo(NewUserForm);
